@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doxy Media - Boost Your Social Presence</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Ensure HTML and Body take full height and allow scrolling */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            overflow-y: auto;   /* Allow vertical scrolling when content overflows */
+        }
+
+        /* Custom styles for Inter font and general body styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1A202C; /* Dark Gray / Near Black for the theme */
+            display: flex;
+            flex-direction: column;
+            color: #E2E8F0; /* Light text color for dark background */
+        }
+        /* Header styling */
+        header {
+            background-color: #1A202C; /* Match body background */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Stronger shadow for dark theme */
+            position: sticky;
+            top: 0;
+            z-index: 40; /* Below modal, above other content */
+            color: #E2E8F0; /* Light text color */
+        }
+
+        /* Cart Icon Styling */
+        .cart-icon-container {
+            position: relative; /* For positioning the count badge */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #6366F1; /* Indigo 500 for prominence */
+            color: white;
+            padding: 0.75rem; /* 12px */
+            border-radius: 9999px; /* Full rounded */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Shadow */
+            transition: transform 0.2s ease-in-out;
+        }
+        .cart-icon-container:hover {
+            transform: scale(1.05);
+        }
+        .cart-item-count {
+            position: absolute;
+            top: -0.5rem; /* -8px */
+            right: -0.5rem; /* -8px */
+            background-color: #EF4444; /* Red 500 */
+            color: white;
+            font-size: 0.75rem; /* 12px */
+            font-weight: bold;
+            border-radius: 9999px;
+            padding: 0.25rem 0.5rem; /* 4px 8px */
+            min-width: 1.5rem; /* 24px */
+            text-align: center;
+            line-height: 1;
+        }
+
+        /* Cart Modal Overlay Styling */
+        .cart-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Darker semi-transparent black overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50; /* Above everything else */
+        }
+        .cart-modal-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+            width: 90%;
+            max-width: 28rem; /* Max width for the modal */
+            max-height: 90vh; /* Max height to allow scrolling */
+            overflow-y: auto; /* Enable scrolling for long carts */
+            position: relative;
+        }
+        .cart-modal-close-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6B7280; /* Gray 500 */
+        }
+        .cart-modal-close-btn:hover {
+            color: #1F2937; /* Gray 900 */
+        }
+
+        /* Message Box Styling */
+        #messageBox {
+            position: fixed;
+            top: 4rem; /* Below header */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+            z-index: 60; /* Above modal */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        #messageBox.show {
+            opacity: 1;
+        }
+
+        /* Hero Section Specific Styling */
+        #hero-section {
+            background-color: #1A202C; /* Dark background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 64px); /* Full viewport height minus header height (approx 64px) */
+            padding: 2rem;
+            text-align: center;
+        }
+        #hero-section h2 {
+            font-size: 3rem; /* Larger heading */
+            margin-bottom: 1rem;
+            font-weight: 800; /* Extra bold */
+            line-height: 1.2;
+        }
+        #hero-section p {
+            font-size: 1.25rem; /* Larger paragraph */
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #CBD5E0; /* Lighter gray for readability */
+        }
+        .order-now-button {
+            background-color: white;
+            color: #4F46E5; /* Indigo 600 */
+            padding: 1rem 2.5rem;
+            font-size: 1.125rem;
+            font-weight: bold;
+            border-radius: 9999px; /* Pill shape */
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .order-now-button:hover {
+            background-color: #E2E8F0; /* Slightly darker white on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Service Icon Styling within Product Cards */
+        .service-icon {
+            font-size: 4rem; /* Large icon size */
+            margin-bottom: 1rem;
+            height: 8rem; /* Fixed height for icon container */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%; /* Take full width of card */
+            border-radius: 0.5rem; /* Rounded corners */
+            background-color: #F0F2F5; /* Light background for the icon area */
+        }
+        .service-icon.instagram { color: #833AB4; } /* Instagram gradient start color */
+        .service-icon.tiktok { color: #69C9D0; } /* TikTok blue */
+        .service-icon.youtube { color: #FF0000; } /* YouTube red */
+        .service-icon.facebook { color: #1877F2; } /* Facebook blue */
+        .service-icon.twitter { color: #1DA1F2; } /* Twitter blue */
+        .service-icon.telegram { color: #0088CC; } /* Telegram blue */
+        .service-icon.free-demo { color: #4F46E5; } /* Indigo for demo */
+        .service-icon.custom-order { color: #5A67D8; } /* Indigo 600 for custom order */
+
+
+        /* Quantity Selector Styling */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem; /* Space before price */
+            width: 100%;
+        }
+        .quantity-btn {
+            background-color: #E2E8F0; /* Light gray button */
+            color: #4A5568; /* Darker gray text */
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem; /* rounded-md */
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            user-select: none; /* Prevent text selection */
+        }
+        .quantity-btn:hover {
+            background-color: #CBD5E0;
+        }
+        .quantity-input-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid #CBD5E0;
+            border-radius: 0.375rem;
+            margin: 0 0.5rem;
+        }
+        .quantity-input {
+            width: 3rem; /* Adjusted width for input */
+            text-align: center;
+            padding: 0.5rem 0.25rem;
+            -moz-appearance: textfield; /* Hide Firefox spinner */
+            border: none; /* Remove individual border */
+            outline: none; /* Remove outline on focus */
+        }
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Hide Chrome/Safari spinner */
+            margin: 0;
+        }
+        .unit-display {
+            padding: 0.5rem 0.25rem;
+            font-weight: bold;
+            color: #4A5568; /* Darker gray text */
+        }
+        .price-display {
+            font-size: 1.5rem; /* Smaller than product card price, larger than quantity */
+            font-weight: bold;
+            color: #2F855A; /* Green 700 */
+            margin-top: 0.5rem; /* Space below quantity control */
+            width: 100%;
+            text-align: center;
+        }
+
+        /* FAQ Section Specific Styling */
+        .faq-item {
+            background-color: #2D3748; /* Darker gray for FAQ items */
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            color: #E2E8F0;
+        }
+        .faq-item:hover {
+            background-color: #4A5568; /* Even darker gray on hover */
+        }
+        .faq-question {
+            font-weight: bold;
+            font-size: 1.125rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #CBD5E0;
+            display: none; /* Hidden by default */
+        }
+        .faq-answer.active {
+            display: block; /* Show when active */
+        }
+        .faq-arrow {
+            transition: transform 0.2s ease-in-out;
+        }
+        .faq-arrow.rotate {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body class="flex flex-col">
+    <!-- Message Box (Global Notification) -->
+    <div id="messageBox" class="hidden"></div>
+
+    <!-- Header / Navigation Bar -->
+    <header class="w-full p-4 flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-white">Doxy Media</h1>
+        
+        <!-- Cart Icon in Header -->
+        <div id="header-cart-icon" class="cart-icon-container">
+            <!-- Shopping Cart Font Awesome Icon -->
+            <i class="fas fa-shopping-cart text-2xl"></i>
+            <span id="cart-item-count" class="cart-item-count">0</span>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        <!-- Hero Section / Landing Page -->
+        <section id="hero-section">
+            <h2 class="text-white">Unlock Your Social Potential with Doxy Media</h2>
+            <p class="text-lg text-gray-300">
+                We are Doxy Media, your trusted partner for skyrocketing your online presence. From authentic followers to engaging likes and views, we provide premium services to help you dominate social media.
+            </p>
+            <button id="order-now-button" class="order-now-button">
+                Explore Our Services
+            </button>
+        </section>
+
+        <!-- Product/Service Display Area -->
+        <section id="services-section" class="container mx-auto px-4 py-12">
+            <h2 class="text-3xl font-bold text-white mb-10 text-center">Our Premium Social Media Services</h2>
+            <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Service Card 1: Instagram Followers -->
+                <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <div class="service-icon instagram">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Instagram Followers</h3>
+                    <p class="text-gray-600 mb-4">Gain genuine, active Instagram followers to boost your profile's credibility.</p>
+                    
+                    <!-- Quantity Control -->
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus-btn">-</button>
+                        <div class="quantity-input-wrapper">
+                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
+                            <span class="unit-display">K</span>
+                        </div>
+                        <button class="quantity-btn plus-btn">+</button>
+                    </div>
+                    <p class="price-display text-green-600 mb-6">$9.00</p>
+
+                    <button
+                        class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                        data-product-name="Instagram Followers"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
+
+                <!-- Service Card 2: TikTok Followers -->
+                <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <div class="service-icon tiktok">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">TikTok Followers</h3>
+                    <p class="text-gray-600 mb-4">Increase engagement on your TikTok videos with thousands of real followers.</p>
+                    
+                    <!-- Quantity Control -->
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus-btn">-</button>
+                        <div class="quantity-input-wrapper">
+                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
+                            <span class="unit-display">K</span>
+                        </div>
+                        <button class="quantity-btn plus-btn">+</button>
+                    </div>
+                    <p class="price-display text-green-600 mb-6">$9.00</p>
+
+                    <button
+                        class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                        data-product-name="TikTok Followers"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
+
+                <!-- Service Card 3: YouTube Followers -->
+                <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <div class="service-icon youtube">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">YouTube Followers</h3>
+                    <p class="text-gray-600 mb-4">Grow your YouTube channel with authentic and engaged followers.</p>
+                    
+                    <!-- Quantity Control -->
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus-btn">-</button>
+                        <div class="quantity-input-wrapper">
+                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
+                            <span class="unit-display">K</span>
+                        </div>
+                        <button class="quantity-btn plus-btn">+</button>
+                    </div>
+                    <p class="price-display text-green-600 mb-6">$9.00</p>
+
+                    <button
+                        class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                        data-product-name="YouTube Followers"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
+
+                <!-- NEW Service Card: Facebook Followers -->
+                <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <div class="service-icon facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Facebook Page Likes/Followers</h3>
+                    <p class="text-gray-600 mb-4">Boost your Facebook page's visibility and attract more organic engagement.</p>
+                    
+                    <!-- Quantity Control -->
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus-btn">-</button>
+                        <div class="quantity-input-wrapper">
+                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
+                            <span class="unit-display">K</span>
+                        </div>
+                        <button class="quantity-btn plus-btn">+</button>
+                    </div>
+                    <p class="price-display text-green-600 mb-6">$9.00</p>
+
+                    <button
+                        class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                        data-product-name="Facebook Page Likes/Followers"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
+
+                <!-- NEW Service Card: X Followers -->
+                <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <div class="service-icon twitter"> <!-- Using twitter class for classic icon -->
+                        <i class="fab fa-twitter"></i> <!-- Classic Twitter icon -->
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">X Followers</h3> 
+                    <p class="text-gray-600 mb-4">Expand your reach on X with a significant increase in your follower count.</p> 
+                    
+                    <!-- Quantity Control -->
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus-btn">-</button>
+                        <div class="quantity-input-wrapper">
+                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
+                            <span class="unit-display">K</span>
+                        </div>
+                        <button class="quantity-btn plus-btn">+</button>
+                    </div>
+                    <p class="price-display text-green-600 mb-6">$9.00</p>
+
+                    <button
+                        class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                        data-product-name="X Followers"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
+
+                <!-- Service Card: Demo Free 20 Followers -->
+                <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <div class="service-icon free-demo">
+                        <i class="fas fa-gift"></i> <!-- Using a gift icon for free demo -->
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Demo: Free 20 Followers</h3>
+                    <p class="text-gray-600 mb-4">Experience our quality! Get 20 free followers to see the Doxy Media difference.</p>
+                    <p class="text-2xl font-bold text-green-600 mb-6">$0.00</p>
+                    <button
+                        class="add-to-cart-button w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                        data-product-name="Demo: Free 20 Followers"
+                        data-product-price="0.00"
+                        data-is-free-demo="true"
+                    >
+                        Claim Free Demo
+                    </button>
+                </div>
+
+                <!-- NEW Product Card: More Services / Custom Order -->
+                <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
+                    <div class="service-icon custom-order">
+                        <i class="fas fa-ellipsis-h"></i> <!-- Ellipsis icon for more options -->
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">More Services / Custom Order</h3>
+                    <p class="text-gray-600 mb-4">Looking for something specific? Contact us for custom social media solutions!</p>
+                    <p class="text-2xl font-bold text-gray-600 mb-6">Inquire Now</p>
+                    <button
+                        class="add-to-cart-button w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                        data-product-name="Custom Service Inquiry"
+                        data-is-custom-order="true"
+                    >
+                        Contact for Custom Order
+                    </button>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works-section" class="container mx-auto px-4 py-12 text-center">
+            <h2 class="text-3xl font-bold text-white mb-10">How Doxy Media Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-xl text-gray-800">
+                    <div class="text-5xl text-blue-600 mb-4"><i class="fas fa-mouse-pointer"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">1. Select Your Service</h3>
+                    <p class="text-gray-600">Choose the social media platform and quantity of followers you need.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-xl text-gray-800">
+                    <div class="text-5xl text-green-600 mb-4"><i class="fas fa-shopping-cart"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">2. Add to Cart & Order</h3>
+                    <p class="text-gray-600">Add services to your cart and proceed to confirm your order via WhatsApp.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-xl text-gray-800">
+                    <div class="text-5xl text-purple-600 mb-4"><i class="fas fa-rocket"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">3. Watch Your Growth</h3>
+                    <p class="text-gray-600">After confirmation, we'll start boosting your presence almost instantly!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What Our Clients Say Section -->
+        <section id="testimonials-section" class="container mx-auto px-4 py-12 text-center">
+            <h2 class="text-3xl font-bold text-white mb-10">What Our Clients Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-xl text-gray-800">
+                    <p class="text-lg italic mb-4">"Doxy Media truly delivered! My Instagram follower count exploded, and the engagement is real. Highly recommend!"</p>
+                    <p class="font-semibold">- Sarah J., Influencer</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-xl text-gray-800">
+                    <p class="text-lg italic mb-4">"I was skeptical at first, but the TikTok followers from Doxy Media are legitimate. My videos are getting so much more traction now."</p>
+                    <p class="font-semibold">- Mark T., Content Creator</p>
+                </div>
+                <!-- Add more testimonials if desired -->
+            </div>
+        </section>
+
+        <!-- Frequently Asked Questions Section -->
+        <section id="faq-section" class="container mx-auto px-4 py-12">
+            <h2 class="text-3xl font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
+            <div class="max-w-2xl mx-auto">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Are the followers real?
+                        <i class="fas fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, Doxy Media is committed to providing genuine and active followers. We do not use bots or fake accounts.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How long does it take to see results?
+                        <i class="fas fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Results typically begin appearing within 24-48 hours after your order is confirmed. Larger orders may take a bit longer to ensure natural growth.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is my account safe?
+                        <i class="fas fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely. We use safe and secure methods that comply with social media platform guidelines. Your account's safety is our top priority.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Will my account be disabled?
+                        <i class="fas fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-answer">
+                        In most cases, no. We employ methods that prioritize the safety and integrity of your account. We work within platform guidelines to ensure your growth is organic-looking and sustainable. While no service can guarantee zero risk due to evolving platform policies, our approach significantly minimizes the chances of account issues.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What if I have an issue with my order?
+                        <i class="fas fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Our customer support team is ready to assist you. Please reach out via WhatsApp or email, and we'll resolve any concerns promptly.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Us Section -->
+        <section class="mt-16 p-6 bg-white rounded-lg shadow-xl text-center container mx-auto mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Connect With Doxy Media</h2>
+            <p class="text-gray-600 mb-8">Have questions or need a custom quote? Reach out to us!</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://wa.me/905355404743" target="_blank" class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                    <!-- WhatsApp Icon (Font Awesome) -->
+                    <i class="fab fa-whatsapp text-xl mr-2"></i>
+                    WhatsApp
+                </a>
+                <a href="https://www.instagram.com/doxymedia.t68?igsh=MW5kc3d4ZzV5OHdwaA==" target="_blank" class="flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                    <!-- Instagram Icon (Font Awesome) -->
+                    <i class="fab fa-instagram text-xl mr-2"></i>
+                    Instagram
+                </a>
+                <a href="https://t.me/Doxymedia" target="_blank" class="flex items-center justify-center bg-blue-400 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                    <!-- Telegram Icon (Font Awesome) -->
+                    <i class="fab fa-telegram-plane text-xl mr-2"></i>
+                    Telegram
+                </a>
+                <a href="https://twitter.com/doxymedia_x" target="_blank" class="flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                    <!-- Twitter Icon (Font Awesome) - Reverted to classic -->
+                    <i class="fab fa-twitter text-xl mr-2"></i> 
+                    X
+                </a>
+                <a href="mailto:info@doxymedia.com" class="flex items-center justify-center bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                    <!-- Email Icon (Font Awesome) -->
+                    <i class="fas fa-envelope text-xl mr-2"></i>
+                    Email
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 text-center p-6 mt-auto">
+        <p>&copy; 2025 Doxy Media. All rights reserved.</p> <!-- Updated copyright year -->
+    </footer>
+
+    <!-- Shopping Cart Modal Overlay -->
+    <div id="cart-modal-overlay" class="cart-modal-overlay hidden">
+        <div id="cart-container" class="cart-modal-content">
+            <button id="cart-modal-close-btn" class="cart-modal-close-btn">&times;</button>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Your Order Summary</h2>
+            <ul id="cart-items" class="list-disc pl-5 mb-4 text-gray-700">
+                <!-- Cart items will be dynamically added here -->
+            </ul>
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-6 border-t pt-4">
+                <span class="text-xl font-semibold text-gray-800">Total:</span>
+                <span id="cart-total" class="text-2xl font-bold text-green-600">$0.00</span>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button
+                    id="order-cart-button"
+                    class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                >
+                    Confirm Order via WhatsApp
+                </button>
+                <!-- Removed More Services / Custom Order button from cart modal -->
+                <button
+                    id="clear-cart-button"
+                    class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
+                >
+                    Clear Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Define the fixed WhatsApp number for Doxy Media
+        const WHATSAPP_NUMBER = '905355404743'; // WhatsApp number from the Instagram page
+
+        // Array to store cart items
+        let cart = [];
+
+        // Get references to HTML elements
+        const orderNowButton = document.getElementById('order-now-button');
+        const servicesSection = document.getElementById('services-section');
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-button');
+        const cartModalOverlay = document.getElementById('cart-modal-overlay');
+        const cartModalCloseBtn = document.getElementById('cart-modal-close-btn');
+        const cartItemsList = document.getElementById('cart-items');
+        const cartTotalSpan = document.getElementById('cart-total');
+        const orderCartButton = document.getElementById('order-cart-button');
+        // const moreServicesButton = document.getElementById('more-services-button'); // Removed this as it's now a product card
+        const clearCartButton = document.getElementById('clear-cart-button');
+        const messageBox = document.getElementById('messageBox');
+        const headerCartIcon = document.getElementById('header-cart-icon');
+        const cartItemCountSpan = document.getElementById('cart-item-count');
+        
+        // Select all quantity controls
+        const quantityControls = document.querySelectorAll('.quantity-control');
+
+        // Select all FAQ items
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        // Function to display messages in the message box
+        function showMessageBox(message, type = 'info') {
+            messageBox.textContent = message;
+            messageBox.classList.remove('hidden', 'text-red-500', 'text-green-500', 'text-blue-500', 'bg-red-500', 'bg-green-500', 'bg-blue-500');
+            
+            if (type === 'error') {
+                messageBox.classList.add('text-white', 'bg-red-500');
+            } else if (type === 'success') {
+                messageBox.classList.add('text-white', 'bg-green-500');
+            } else {
+                messageBox.classList.add('text-white', 'bg-blue-500');
+            }
+            
+            messageBox.classList.add('show'); // Add 'show' class for fade-in effect
+            
+            setTimeout(() => {
+                messageBox.classList.remove('show'); // Remove 'show' class for fade-out
+                setTimeout(() => {
+                    messageBox.classList.add('hidden'); // Hide after transition
+                }, 300); // Match transition duration
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Function to update the cart display, total, and header icon count
+        function updateCartDisplay() {
+            cartItemsList.innerHTML = ''; // Clear current list
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartItemCountSpan.textContent = '0';
+                headerCartIcon.classList.add('hidden'); // Hide icon if cart is empty
+                // If cart modal is open and cart becomes empty, close it
+                if (!cartModalOverlay.classList.contains('hidden')) {
+                    cartModalOverlay.classList.add('hidden');
+                }
+                return;
+            } else {
+                headerCartIcon.classList.remove('hidden'); // Show icon if cart has items
+            }
+
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                // Display quantity for items that aren't the free demo or custom order with 'K'
+                const quantityText = item.quantity > 0 ? ` (${item.quantity}K)` : '';
+                listItem.textContent = `${item.name}${quantityText} - $${item.price.toFixed(2)}`;
+                total += item.price;
+                cartItemsList.appendChild(listItem); // Append after setting textContent
+            });
+
+            cartTotalSpan.textContent = `$${total.toFixed(2)}`;
+            cartItemCountSpan.textContent = cart.length; // Update item count on icon
+        }
+
+        // Function to update the price display for a given product card
+        function updateProductPrice(productCard) {
+            const quantityInput = productCard.querySelector('.quantity-input');
+            const priceDisplay = productCard.querySelector('.price-display');
+            const basePrice = parseFloat(quantityInput.dataset.basePrice);
+            const quantity = parseInt(quantityInput.value);
+
+            const calculatedPrice = basePrice * quantity;
+            priceDisplay.textContent = `$${calculatedPrice.toFixed(2)}`;
+        }
+
+        // Initialize quantity controls and prices
+        quantityControls.forEach(control => {
+            const productCard = control.closest('.product-card');
+            const quantityInput = control.querySelector('.quantity-input');
+            const minusBtn = control.querySelector('.minus-btn');
+            const plusBtn = control.querySelector('.plus-btn');
+
+            // Set initial price
+            updateProductPrice(productCard);
+
+            minusBtn.addEventListener('click', () => {
+                let currentValue = parseInt(quantityInput.value);
+                const minValue = parseInt(quantityInput.min);
+                if (currentValue > minValue) {
+                    quantityInput.value = currentValue - 1;
+                    updateProductPrice(productCard);
+                }
+            });
+
+            plusBtn.addEventListener('click', () => {
+                let currentValue = parseInt(quantityInput.value);
+                const maxValue = parseInt(quantityInput.max) || 999; // Default max if not set
+                if (currentValue < maxValue) {
+                    quantityInput.value = currentValue + 1;
+                    updateProductPrice(productCard);
+                }
+            });
+
+            // Allow direct input, but re-calculate on change/blur
+            quantityInput.addEventListener('change', () => {
+                let currentValue = parseInt(quantityInput.value);
+                const minValue = parseInt(quantityInput.min);
+                const maxValue = parseInt(quantityInput.max) || 999;
+
+                if (isNaN(currentValue) || currentValue < minValue) {
+                    quantityInput.value = minValue;
+                } else if (currentValue > maxValue) {
+                    quantityInput.value = maxValue;
+                }
+                updateProductPrice(productCard);
+            });
+        });
+
+
+        // Event listener for "Add to Cart" buttons (now also handles "More Services")
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const productCard = event.target.closest('.product-card');
+                const productName = event.target.dataset.productName;
+                const isFreeDemo = event.target.dataset.isFreeDemo === 'true'; // Check if it's the free demo
+                const isCustomOrder = event.target.dataset.isCustomOrder === 'true'; // Check if it's the custom order
+
+                if (isCustomOrder) {
+                    const customOrderMessage = encodeURIComponent(
+                        "Hello Doxy Media team! I'm interested in discussing other social media boosting services not listed on your website, or a custom order. Can you please assist me?"
+                    );
+                    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${customOrderMessage}`;
+                    window.open(whatsappUrl, '_blank');
+                    showMessageBox('Opening WhatsApp for custom inquiry!', 'info');
+                    return; // Stop further processing for custom order
+                }
+
+                let itemPrice;
+                let itemQuantity = 0; // Default for non-quantity items (like free demo)
+
+                if (isFreeDemo) {
+                    itemPrice = parseFloat(event.target.dataset.productPrice); // Get fixed price for demo
+                    // itemQuantity remains 0 for free demo, as it's not a 'K' quantity
+                } else {
+                    const quantityInput = productCard.querySelector('.quantity-input');
+                    const priceDisplay = productCard.querySelector('.price-display');
+                    itemQuantity = parseInt(quantityInput.value);
+                    itemPrice = parseFloat(priceDisplay.textContent.replace('$', ''));
+                }
+                
+                cart.push({ name: productName, price: itemPrice, quantity: itemQuantity });
+                updateCartDisplay();
+                showMessageBox(`'${productName}' added to cart!`, 'success');
+            });
+        });
+
+        // Event listener for "Confirm Order via WhatsApp" button
+        orderCartButton.addEventListener('click', () => {
+            if (cart.length === 0) {
+                showMessageBox('Your cart is empty. Please add services before ordering.', 'error');
+                return;
+            }
+
+            let message = "*Ready to Boost Your Socials with Doxy Media!* 🚀\n\n";
+            message += "Hello Doxy Media team! I'm excited to get started. Here's my order for social media boosting services:\n\n";
+            
+            let total = 0;
+
+            // Add each item to the message with bullet points and italics for name
+            cart.forEach((item, index) => {
+                // Add 'K' only if quantity is greater than 0 (i.e., not the free demo or custom order)
+                const quantityText = item.quantity > 0 ? ` (${item.quantity}K)` : '';
+                message += `* _${item.name}${quantityText}_ - *$${item.price.toFixed(2)}*\n`; // Italic service name, bold price
+                total += item.price;
+            });
+
+            message += `\n*Total Investment:* *$${total.toFixed(2)}*\n\n`;
+            message += "_I'm looking forward to seeing my social presence grow!_ ✨\n";
+            message += "Please let me know the next steps to confirm and activate these services. Thank you!\n\n";
+
+            // Encode the message to be URL-safe
+            const encodedMessage = encodeURIComponent(message);
+
+            // Construct the WhatsApp URL
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+            // Open the WhatsApp URL in a new tab
+            window.open(whatsappUrl, '_blank');
+            cartModalOverlay.classList.add('hidden'); // Close modal after ordering
+            showMessageBox('Opening WhatsApp with your order!', 'info');
+        });
+
+        // Event listener for "Clear Cart" button
+        clearCartButton.addEventListener('click', () => {
+            cart = []; // Clear the cart array
+            updateCartDisplay(); // Update the display to show an empty cart
+            showMessageBox('Cart cleared!', 'info');
+            cartModalOverlay.classList.add('hidden'); // Close modal after clearing
+        });
+
+        // Event listener for header cart icon to open cart modal
+        headerCartIcon.addEventListener('click', () => {
+            if (cart.length === 0) {
+                showMessageBox('Your cart is currently empty. Add some services!', 'info');
+                return;
+            }
+            cartModalOverlay.classList.remove('hidden');
+        });
+
+        // Event listener for modal overlay click (to close when clicking outside content)
+        cartModalOverlay.addEventListener('click', (event) => {
+            if (event.target === cartModalOverlay) {
+                cartModalOverlay.classList.add('hidden');
+            }
+        });
+
+        // Event listener for modal close button
+        cartModalCloseBtn.addEventListener('click', () => {
+            cartModalOverlay.classList.add('hidden');
+        });
+
+        // Event listener for "Explore Our Services" button on the hero section
+        orderNowButton.addEventListener('click', () => {
+            servicesSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // FAQ accordion functionality
+        faqItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const answer = item.querySelector('.faq-answer');
+                const arrow = item.querySelector('.faq-arrow');
+
+                // Toggle visibility of the answer
+                answer.classList.toggle('active');
+                // Rotate the arrow
+                arrow.classList.toggle('rotate');
+            });
+        });
+
+        // Initial display update to hide the cart icon if cart is empty on load
+        updateCartDisplay();
+    </script>
+</body>
+</html>
+

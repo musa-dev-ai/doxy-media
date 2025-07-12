@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doxy Media - Boost Your Social Presence</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Ensure HTML and Body take full height and allow scrolling */
@@ -142,6 +140,7 @@
             min-height: calc(100vh - 64px); /* Full viewport height minus header height */
             padding: 2rem;
             text-align: center;
+            filter: brightness(1.2); /* Make the background image slightly brighter */
         }
 
         /* Opaque Overlay for Hero Section */
@@ -154,6 +153,7 @@
             height: 100%;
             background-color: rgba(26, 32, 44, 0.7); /* Dark overlay with 70% opacity */
             z-index: 1; /* Place behind content but above background image */
+            filter: brightness(1); /* Ensure the overlay itself is not affected by the hero section's filter */
         }
 
         /* Ensure hero section content is above the overlay */
@@ -237,6 +237,7 @@
             background-repeat: no-repeat;
             background-position: right 0.75rem center;
             background-size: 1.5em; /* Size of the custom arrow */
+            display: block; /* Ensures it takes full width of parent and doesn't wrap oddly */
         }
         .tier-select:focus {
             outline: none;
@@ -319,24 +320,18 @@
     </style>
 </head>
 <body class="flex flex-col">
-    <!-- Message Box (Global Notification) -->
     <div id="messageBox" class="hidden"></div>
 
-    <!-- Header / Navigation Bar -->
     <header class="w-full p-4 flex justify-between items-center">
         <h1 class="text-3xl font-bold text-white">Doxy Media</h1>
         
-        <!-- Cart Icon in Header -->
         <div id="header-cart-icon" class="cart-icon-container">
-            <!-- Shopping Cart Font Awesome Icon -->
             <i class="fas fa-shopping-cart text-2xl"></i>
             <span id="cart-item-count" class="cart-item-count">0</span>
         </div>
     </header>
 
-    <!-- Main Content Area -->
     <main class="flex-grow">
-        <!-- Hero Section / Landing Page -->
         <section id="hero-section">
             <h2 class="text-white">Unlock Your Social Potential with Doxy Media</h2>
             <p class="text-lg text-gray-300">
@@ -347,11 +342,9 @@
             </button>
         </section>
 
-        <!-- Product/Service Display Area -->
         <section id="services-section" class="container mx-auto px-4 py-12">
             <h2 class="text-3xl font-bold text-white mb-10 text-center">Our Premium Social Media Services</h2>
             <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Service Card 1: Instagram Followers (Tiered Pricing) -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon instagram">
                         <i class="fab fa-instagram"></i>
@@ -359,19 +352,15 @@
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Instagram Followers</h3>
                     <p class="text-gray-600 mb-4">Gain genuine, active Instagram followers to boost your profile's credibility.</p>
                     
-                    <!-- Tiered Quantity Selector -->
                     <div class="tier-selector-container">
                         <select class="tier-select" data-product-type="instagram">
-                            <option value="1" data-price="9.00"><strong>🔥 🔥 🔥 1K Followers - $9.00</strong></option>
+                            <option value="1" data-price="9.00">1K Followers - $9.00</option>
                             <option value="2" data-price="18.00">2K Followers - $18.00</option>
-                            <option value="3" data-price="27.00">3K Followers - $27.00</option>
-                            <option value="4" data-price="36.00">4K Followers - $36.00</option>
-                            <option value="5" data-price="35.00"><strong>🔥 🔥 🔥 5K Followers - $35.00</strong></option>
-                            <option value="6" data-price="54.00">6K Followers - $54.00</option>
-                            <option value="7" data-price="63.00">7K Followers - $63.00</option>
-                            <option value="8" data-price="72.00">8K Followers - $72.00</option>
-                            <option value="9" data-price="81.00">9K Followers - $81.00</option>
-                            <option value="10" data-price="99.00"><strong>🔥 🔥 🔥 10K Followers - $99.00</strong></option>
+                            <option value="3" data-price="25.00">3K Followers - $25.00</option>
+                            <option value="4" data-price="32.00">4K Followers - $32.00</option>
+                            <option value="5" data-price="35.00">5K Followers - $35.00</option>
+                            <option value="7" data-price="45.00">7K Followers - $45.00</option>
+                            <option value="10" data-price="55.00">10K Followers - $55.00</option>
                         </select>
                     </div>
                     <p class="price-display text-green-600 mb-6">$9.00</p>
@@ -384,7 +373,6 @@
                     </button>
                 </div>
 
-                <!-- Service Card 2: TikTok Followers (Tiered Pricing) -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon tiktok">
                         <i class="fab fa-tiktok"></i>
@@ -392,19 +380,18 @@
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">TikTok Followers</h3>
                     <p class="text-gray-600 mb-4">Increase engagement on your TikTok videos with thousands of real followers.</p>
                     
-                    <!-- Tiered Quantity Selector -->
                     <div class="tier-selector-container">
                         <select class="tier-select" data-product-type="others">
-                            <option value="1" data-price="19.00"><strong>🔥 🔥 🔥 1K Followers - $19.00</strong></option>
+                            <option value="1" data-price="19.00">1K Followers - $19.00</option>
                             <option value="2" data-price="38.00">2K Followers - $38.00</option>
                             <option value="3" data-price="57.00">3K Followers - $57.00</option>
                             <option value="4" data-price="76.00">4K Followers - $76.00</option>
-                            <option value="5" data-price="65.00"><strong>🔥 🔥 🔥 5K Followers - $65.00</strong></option>
+                            <option value="5" data-price="65.00">5K Followers - $65.00</option>
                             <option value="6" data-price="114.00">6K Followers - $114.00</option>
                             <option value="7" data-price="133.00">7K Followers - $133.00</option>
                             <option value="8" data-price="152.00">8K Followers - $152.00</option>
                             <option value="9" data-price="171.00">9K Followers - $171.00</option>
-                            <option value="10" data-price="99.00"><strong>🔥 🔥 🔥 10K Followers - $99.00</strong></option>
+                            <option value="10" data-price="99.00">10K Followers - $99.00</option>
                         </select>
                     </div>
                     <p class="price-display text-green-600 mb-6">$19.00</p>
@@ -417,7 +404,6 @@
                     </button>
                 </div>
 
-                <!-- Service Card 3: YouTube Followers (Tiered Pricing) -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon youtube">
                         <i class="fab fa-youtube"></i>
@@ -425,19 +411,18 @@
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">YouTube Followers</h3>
                     <p class="text-gray-600 mb-4">Grow your YouTube channel with authentic and engaged followers.</p>
                     
-                    <!-- Tiered Quantity Selector -->
                     <div class="tier-selector-container">
                         <select class="tier-select" data-product-type="others">
-                            <option value="1" data-price="19.00"><strong>🔥 🔥 🔥 1K Followers - $19.00</strong></option>
+                            <option value="1" data-price="19.00">1K Followers - $19.00</option>
                             <option value="2" data-price="38.00">2K Followers - $38.00</option>
                             <option value="3" data-price="57.00">3K Followers - $57.00</option>
                             <option value="4" data-price="76.00">4K Followers - $76.00</option>
-                            <option value="5" data-price="65.00"><strong>🔥 🔥 🔥 5K Followers - $65.00</strong></option>
+                            <option value="5" data-price="65.00">5K Followers - $65.00</option>
                             <option value="6" data-price="114.00">6K Followers - $114.00</option>
                             <option value="7" data-price="133.00">7K Followers - $133.00</option>
                             <option value="8" data-price="152.00">8K Followers - $152.00</option>
                             <option value="9" data-price="171.00">9K Followers - $171.00</option>
-                            <option value="10" data-price="99.00"><strong>🔥 🔥 🔥 10K Followers - $99.00</strong></option>
+                            <option value="10" data-price="99.00">10K Followers - $99.00</option>
                         </select>
                     </div>
                     <p class="price-display text-green-600 mb-6">$19.00</p>
@@ -450,7 +435,6 @@
                     </button>
                 </div>
 
-                <!-- NEW Service Card: Facebook Page Likes/Followers (Tiered Pricing) -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon facebook">
                         <i class="fab fa-facebook-f"></i>
@@ -458,19 +442,18 @@
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Facebook Page Likes/Followers</h3>
                     <p class="text-gray-600 mb-4">Boost your Facebook page's visibility and attract more organic engagement.</p>
                     
-                    <!-- Tiered Quantity Selector -->
                     <div class="tier-selector-container">
                         <select class="tier-select" data-product-type="others">
-                            <option value="1" data-price="19.00"><strong>🔥 🔥 🔥 1K Followers - $19.00</strong></option>
+                            <option value="1" data-price="19.00">1K Followers - $19.00</option>
                             <option value="2" data-price="38.00">2K Followers - $38.00</option>
                             <option value="3" data-price="57.00">3K Followers - $57.00</option>
                             <option value="4" data-price="76.00">4K Followers - $76.00</option>
-                            <option value="5" data-price="65.00"><strong>🔥 🔥 🔥 5K Followers - $65.00</strong></option>
+                            <option value="5" data-price="65.00">5K Followers - $65.00</option>
                             <option value="6" data-price="114.00">6K Followers - $114.00</option>
                             <option value="7" data-price="133.00">7K Followers - $133.00</option>
                             <option value="8" data-price="152.00">8K Followers - $152.00</option>
                             <option value="9" data-price="171.00">9K Followers - $171.00</option>
-                            <option value="10" data-price="99.00"><strong>🔥 🔥 🔥 10K Followers - $99.00</strong></option>
+                            <option value="10" data-price="99.00">10K Followers - $99.00</option>
                         </select>
                     </div>
                     <p class="price-display text-green-600 mb-6">$19.00</p>
@@ -483,11 +466,9 @@
                     </button>
                 </div>
 
-                <!-- Service Card: Demo Free 20 Followers -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon free-demo">
-                        <i class="fas fa-gift"></i> <!-- Using a gift icon for free demo -->
-                    </div>
+                        <i class="fas fa-gift"></i> </div>
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Demo: Free 20 Followers</h3>
                     <p class="text-gray-600 mb-4">Experience our quality! Get 20 free followers to see the Doxy Media difference.</p>
                     <p class="text-2xl font-bold text-green-600 mb-6">$0.00</p>
@@ -501,11 +482,9 @@
                     </button>
                 </div>
 
-                <!-- NEW Product Card: More Services / Custom Order -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon custom-order">
-                        <i class="fas fa-ellipsis-h"></i> <!-- Ellipsis icon for more options -->
-                    </div>
+                        <i class="fas fa-ellipsis-h"></i> </div>
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">More Services / Custom Order</h3>
                     <p class="text-gray-600 mb-4">Looking for something specific? Contact us for custom social media solutions!</p>
                     <p class="text-2xl font-bold text-gray-600 mb-6">Inquire Now</p>
@@ -521,7 +500,6 @@
             </div>
         </section>
 
-        <!-- How It Works Section -->
         <section id="how-it-works-section" class="container mx-auto px-4 py-12 text-center">
             <h2 class="text-3xl font-bold text-white mb-10">How Doxy Media Works</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -543,7 +521,6 @@
             </div>
         </section>
 
-        <!-- What Our Clients Say Section -->
         <section id="testimonials-section" class="container mx-auto px-4 py-12 text-center">
             <h2 class="text-3xl font-bold text-white mb-10">What Our Clients Say</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -555,11 +532,9 @@
                     <p class="text-lg italic mb-4">"I was skeptical at first, but the TikTok followers from Doxy Media are legitimate. My videos are getting so much more traction now."</p>
                     <p class="font-semibold">- Mark T., Content Creator</p>
                 </div>
-                <!-- Add more testimonials if desired -->
-            </div>
+                </div>
         </section>
 
-        <!-- Frequently Asked Questions Section -->
         <section id="faq-section" class="container mx-auto px-4 py-12">
             <h2 class="text-3xl font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
             <div class="max-w-2xl mx-auto">
@@ -611,29 +586,23 @@
             </div>
         </section>
 
-        <!-- Contact Us Section -->
         <section class="mt-16 p-6 bg-white rounded-lg shadow-xl text-center container mx-auto mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Connect With Doxy Media</h2>
             <p class="text-gray-600 mb-8">Have questions or need a custom quote? Reach out to us!</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="https://wa.me/905355404743" target="_blank" class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-                    <!-- WhatsApp Icon (Font Awesome) -->
                     <i class="fab fa-whatsapp text-xl mr-2"></i>
                     WhatsApp
                 </a>
                 <a href="https://www.instagram.com/j4mes.dev00?igsh=YWltMXBuM3dzdzNy" target="_blank" class="flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-                    <!-- Instagram Icon (Font Awesome) -->
                     <i class="fab fa-instagram text-xl mr-2"></i>
                     Instagram
                 </a>
                 <a href="https://t.me/Doxymedia" target="_blank" class="flex items-center justify-center bg-blue-400 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-                    <!-- Telegram Icon (Font Awesome) -->
                     <i class="fab fa-telegram-plane text-xl mr-2"></i>
                     Telegram
                 </a>
-                <!-- Changed from <a> to <button> for email contact -->
                 <button id="email-contact-button" class="flex items-center justify-center bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-                    <!-- Email Icon (Font Awesome) -->
                     <i class="fas fa-envelope text-xl mr-2"></i>
                     Email
                 </button>
@@ -641,19 +610,15 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 text-center p-6 mt-auto">
-        <p>&copy; 2025 Doxy Media. All rights reserved.</p> <!-- Updated copyright year -->
-    </footer>
+        <p>&copy; 2025 Doxy Media. All rights reserved.</p> </footer>
 
-    <!-- Shopping Cart Modal Overlay -->
     <div id="cart-modal-overlay" class="cart-modal-overlay hidden">
         <div id="cart-container" class="cart-modal-content">
             <button id="cart-modal-close-btn" class="cart-modal-close-btn">&times;</button>
             <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Your Order Summary</h2>
             <ul id="cart-items" class="list-disc pl-5 mb-4 text-gray-700">
-                <!-- Cart items will be dynamically added here -->
-            </ul>
+                </ul>
             <div class="flex flex-col sm:flex-row justify-between items-center mb-6 border-t pt-4">
                 <span class="text-xl font-semibold text-gray-800">Total:</span>
                 <span id="cart-total" class="text-2xl font-bold text-green-600">$0.00</span>
@@ -675,7 +640,6 @@
         </div>
     </div>
 
-    <!-- New Email Copy Modal (hidden by default) -->
     <div id="emailCopyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center relative max-w-sm w-full mx-4">
             <button id="emailCopyModalCloseBtn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
@@ -769,7 +733,7 @@
                 } else if (item.name.includes("Demo")) {
                     quantityDisplay = " (20 Followers)";
                 }
-                
+
                 listItem.textContent = `${item.name}${quantityDisplay} - $${item.price.toFixed(2)}`;
                 total += item.price;
                 cartItemsList.appendChild(listItem);

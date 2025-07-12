@@ -128,16 +128,42 @@
 
         /* Hero Section Specific Styling */
         #hero-section {
-            background-color: #1A202C; /* Dark background */
-            color: white;
+            background-image: url('https://files.catbox.moe/uxv0ci.jpg'); /* Actual social media image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative; /* Needed for the pseudo-element overlay */
+            overflow: hidden; /* Ensures the overlay doesn't spill out */
+            color: white; /* Text color for content on top of the overlay */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: calc(100vh - 64px); /* Full viewport height minus header height (approx 64px) */
+            min-height: calc(100vh - 64px); /* Full viewport height minus header height */
             padding: 2rem;
             text-align: center;
         }
+
+        /* Opaque Overlay for Hero Section */
+        #hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 32, 44, 0.7); /* Dark overlay with 70% opacity */
+            z-index: 1; /* Place behind content but above background image */
+        }
+
+        /* Ensure hero section content is above the overlay */
+        #hero-section h2,
+        #hero-section p,
+        #hero-section button {
+            position: relative;
+            z-index: 2; /* Place content above the overlay */
+        }
+
         #hero-section h2 {
             font-size: 3rem; /* Larger heading */
             margin-bottom: 1rem;
@@ -183,58 +209,47 @@
         .service-icon.tiktok { color: #69C9D0; } /* TikTok blue */
         .service-icon.youtube { color: #FF0000; } /* YouTube red */
         .service-icon.facebook { color: #1877F2; } /* Facebook blue */
-        .service-icon.twitter { color: #1DA1F2; } /* Twitter blue */
         .service-icon.telegram { color: #0088CC; } /* Telegram blue */
         .service-icon.free-demo { color: #4F46E5; } /* Indigo for demo */
         .service-icon.custom-order { color: #5A67D8; } /* Indigo 600 for custom order */
 
 
-        /* Quantity Selector Styling */
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Tier Selector Styling (for Instagram/Facebook/YouTube/TikTok) */
+        .tier-selector-container {
             margin-bottom: 1rem; /* Space before price */
             width: 100%;
-        }
-        .quantity-btn {
-            background-color: #E2E8F0; /* Light gray button */
-            color: #4A5568; /* Darker gray text */
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem; /* rounded-md */
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
-            user-select: none; /* Prevent text selection */
-        }
-        .quantity-btn:hover {
-            background-color: #CBD5E0;
-        }
-        .quantity-input-wrapper {
             display: flex;
-            align-items: center;
-            border: 1px solid #CBD5E0;
-            border-radius: 0.375rem;
-            margin: 0 0.5rem;
+            justify-content: center;
         }
-        .quantity-input {
-            width: 3rem; /* Adjusted width for input */
-            text-align: center;
-            padding: 0.5rem 0.25rem;
-            -moz-appearance: textfield; /* Hide Firefox spinner */
-            border: none; /* Remove individual border */
-            outline: none; /* Remove outline on focus */
-        }
-        .quantity-input::-webkit-outer-spin-button,
-        .quantity-input::-webkit-inner-spin-button {
-            -webkit-appearance: none; /* Hide Chrome/Safari spinner */
-            margin: 0;
-        }
-        .unit-display {
-            padding: 0.5rem 0.25rem;
+        .tier-select {
+            padding: 0.75rem 1rem; /* Increased padding */
+            border: 2px solid #6366F1; /* More prominent border */
+            border-radius: 0.5rem; /* Slightly more rounded */
+            background-color: white;
+            color: #1A202C; /* Darker text for better contrast */
             font-weight: bold;
-            color: #4A5568; /* Darker gray text */
+            font-size: 1.125rem; /* Larger font size */
+            cursor: pointer;
+            width: 100%; /* Make select fill available width */
+            max-width: 18rem; /* Increased max width */
+            appearance: none; /* Remove default arrow */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'%3E%3C/path%3E%3C/svg%3E"); /* Custom arrow */
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.5em; /* Size of the custom arrow */
         }
+        .tier-select:focus {
+            outline: none;
+            border-color: #4F46E5; /* Darker indigo on focus */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.7); /* More prominent shadow on focus */
+        }
+        /* Style for options within the select dropdown */
+        .tier-select option {
+            background-color: white;
+            color: #1A202C;
+            padding: 0.5rem;
+        }
+
         .price-display {
             font-size: 1.5rem; /* Smaller than product card price, larger than quantity */
             font-weight: bold;
@@ -244,7 +259,17 @@
             text-align: center;
         }
 
-        /* FAQ Section Specific Styling */
+        /* Responsive adjustments for button group in cart modal */
+        .cart-modal-content .flex-col.sm\:flex-row {
+            flex-direction: column; /* Default to column on small screens */
+        }
+        @media (min-width: 640px) { /* Small screens and up */
+            .cart-modal-content .flex-col.sm\:flex-row {
+                flex-direction: row; /* Change to row on small screens and up */
+            }
+        }
+
+        /* FAQ Section Specific Styling - UPDATED FOR CLICK TOGGLE & SCROLLING */
         .faq-item {
             background-color: #2D3748; /* Darker gray for FAQ items */
             border-radius: 0.5rem;
@@ -269,14 +294,25 @@
             font-size: 0.95rem;
             line-height: 1.5;
             color: #CBD5E0;
-            display: none; /* Hidden by default */
+            
+            /* Initial state: hidden and collapsed */
+            max-height: 0;
+            overflow: hidden; /* Hide overflow initially */
+            opacity: 0;
+            
+            /* Smooth transition for max-height and opacity */
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
         }
+        /* Active state: visible and expanded */
         .faq-answer.active {
-            display: block; /* Show when active */
+            max-height: 200px; /* Sufficient height to show content, enables scrolling */
+            overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
+            opacity: 1;
         }
         .faq-arrow {
             transition: transform 0.2s ease-in-out;
         }
+        /* Rotate arrow when active */
         .faq-arrow.rotate {
             transform: rotate(90deg);
         }
@@ -315,7 +351,7 @@
         <section id="services-section" class="container mx-auto px-4 py-12">
             <h2 class="text-3xl font-bold text-white mb-10 text-center">Our Premium Social Media Services</h2>
             <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Service Card 1: Instagram Followers -->
+                <!-- Service Card 1: Instagram Followers (Tiered Pricing) -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon instagram">
                         <i class="fab fa-instagram"></i>
@@ -323,14 +359,20 @@
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Instagram Followers</h3>
                     <p class="text-gray-600 mb-4">Gain genuine, active Instagram followers to boost your profile's credibility.</p>
                     
-                    <!-- Quantity Control -->
-                    <div class="quantity-control">
-                        <button class="quantity-btn minus-btn">-</button>
-                        <div class="quantity-input-wrapper">
-                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
-                            <span class="unit-display">K</span>
-                        </div>
-                        <button class="quantity-btn plus-btn">+</button>
+                    <!-- Tiered Quantity Selector -->
+                    <div class="tier-selector-container">
+                        <select class="tier-select" data-product-type="instagram">
+                            <option value="1" data-price="9.00"><strong>🔥 🔥 🔥 1K Followers - $9.00</strong></option>
+                            <option value="2" data-price="18.00">2K Followers - $18.00</option>
+                            <option value="3" data-price="27.00">3K Followers - $27.00</option>
+                            <option value="4" data-price="36.00">4K Followers - $36.00</option>
+                            <option value="5" data-price="35.00"><strong>🔥 🔥 🔥 5K Followers - $35.00</strong></option>
+                            <option value="6" data-price="54.00">6K Followers - $54.00</option>
+                            <option value="7" data-price="63.00">7K Followers - $63.00</option>
+                            <option value="8" data-price="72.00">8K Followers - $72.00</option>
+                            <option value="9" data-price="81.00">9K Followers - $81.00</option>
+                            <option value="10" data-price="99.00"><strong>🔥 🔥 🔥 10K Followers - $99.00</strong></option>
+                        </select>
                     </div>
                     <p class="price-display text-green-600 mb-6">$9.00</p>
 
@@ -342,7 +384,7 @@
                     </button>
                 </div>
 
-                <!-- Service Card 2: TikTok Followers -->
+                <!-- Service Card 2: TikTok Followers (Tiered Pricing) -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon tiktok">
                         <i class="fab fa-tiktok"></i>
@@ -350,16 +392,22 @@
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">TikTok Followers</h3>
                     <p class="text-gray-600 mb-4">Increase engagement on your TikTok videos with thousands of real followers.</p>
                     
-                    <!-- Quantity Control -->
-                    <div class="quantity-control">
-                        <button class="quantity-btn minus-btn">-</button>
-                        <div class="quantity-input-wrapper">
-                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
-                            <span class="unit-display">K</span>
-                        </div>
-                        <button class="quantity-btn plus-btn">+</button>
+                    <!-- Tiered Quantity Selector -->
+                    <div class="tier-selector-container">
+                        <select class="tier-select" data-product-type="others">
+                            <option value="1" data-price="19.00"><strong>🔥 🔥 🔥 1K Followers - $19.00</strong></option>
+                            <option value="2" data-price="38.00">2K Followers - $38.00</option>
+                            <option value="3" data-price="57.00">3K Followers - $57.00</option>
+                            <option value="4" data-price="76.00">4K Followers - $76.00</option>
+                            <option value="5" data-price="65.00"><strong>🔥 🔥 🔥 5K Followers - $65.00</strong></option>
+                            <option value="6" data-price="114.00">6K Followers - $114.00</option>
+                            <option value="7" data-price="133.00">7K Followers - $133.00</option>
+                            <option value="8" data-price="152.00">8K Followers - $152.00</option>
+                            <option value="9" data-price="171.00">9K Followers - $171.00</option>
+                            <option value="10" data-price="99.00"><strong>🔥 🔥 🔥 10K Followers - $99.00</strong></option>
+                        </select>
                     </div>
-                    <p class="price-display text-green-600 mb-6">$9.00</p>
+                    <p class="price-display text-green-600 mb-6">$19.00</p>
 
                     <button
                         class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
@@ -369,7 +417,7 @@
                     </button>
                 </div>
 
-                <!-- Service Card 3: YouTube Followers -->
+                <!-- Service Card 3: YouTube Followers (Tiered Pricing) -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon youtube">
                         <i class="fab fa-youtube"></i>
@@ -377,16 +425,22 @@
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">YouTube Followers</h3>
                     <p class="text-gray-600 mb-4">Grow your YouTube channel with authentic and engaged followers.</p>
                     
-                    <!-- Quantity Control -->
-                    <div class="quantity-control">
-                        <button class="quantity-btn minus-btn">-</button>
-                        <div class="quantity-input-wrapper">
-                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
-                            <span class="unit-display">K</span>
-                        </div>
-                        <button class="quantity-btn plus-btn">+</button>
+                    <!-- Tiered Quantity Selector -->
+                    <div class="tier-selector-container">
+                        <select class="tier-select" data-product-type="others">
+                            <option value="1" data-price="19.00"><strong>🔥 🔥 🔥 1K Followers - $19.00</strong></option>
+                            <option value="2" data-price="38.00">2K Followers - $38.00</option>
+                            <option value="3" data-price="57.00">3K Followers - $57.00</option>
+                            <option value="4" data-price="76.00">4K Followers - $76.00</option>
+                            <option value="5" data-price="65.00"><strong>🔥 🔥 🔥 5K Followers - $65.00</strong></option>
+                            <option value="6" data-price="114.00">6K Followers - $114.00</option>
+                            <option value="7" data-price="133.00">7K Followers - $133.00</option>
+                            <option value="8" data-price="152.00">8K Followers - $152.00</option>
+                            <option value="9" data-price="171.00">9K Followers - $171.00</option>
+                            <option value="10" data-price="99.00"><strong>🔥 🔥 🔥 10K Followers - $99.00</strong></option>
+                        </select>
                     </div>
-                    <p class="price-display text-green-600 mb-6">$9.00</p>
+                    <p class="price-display text-green-600 mb-6">$19.00</p>
 
                     <button
                         class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
@@ -396,7 +450,7 @@
                     </button>
                 </div>
 
-                <!-- NEW Service Card: Facebook Followers -->
+                <!-- NEW Service Card: Facebook Page Likes/Followers (Tiered Pricing) -->
                 <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
                     <div class="service-icon facebook">
                         <i class="fab fa-facebook-f"></i>
@@ -404,47 +458,26 @@
                     <h3 class="text-xl font-semibold text-gray-800 mb-2">Facebook Page Likes/Followers</h3>
                     <p class="text-gray-600 mb-4">Boost your Facebook page's visibility and attract more organic engagement.</p>
                     
-                    <!-- Quantity Control -->
-                    <div class="quantity-control">
-                        <button class="quantity-btn minus-btn">-</button>
-                        <div class="quantity-input-wrapper">
-                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
-                            <span class="unit-display">K</span>
-                        </div>
-                        <button class="quantity-btn plus-btn">+</button>
+                    <!-- Tiered Quantity Selector -->
+                    <div class="tier-selector-container">
+                        <select class="tier-select" data-product-type="others">
+                            <option value="1" data-price="19.00"><strong>🔥 🔥 🔥 1K Followers - $19.00</strong></option>
+                            <option value="2" data-price="38.00">2K Followers - $38.00</option>
+                            <option value="3" data-price="57.00">3K Followers - $57.00</option>
+                            <option value="4" data-price="76.00">4K Followers - $76.00</option>
+                            <option value="5" data-price="65.00"><strong>🔥 🔥 🔥 5K Followers - $65.00</strong></option>
+                            <option value="6" data-price="114.00">6K Followers - $114.00</option>
+                            <option value="7" data-price="133.00">7K Followers - $133.00</option>
+                            <option value="8" data-price="152.00">8K Followers - $152.00</option>
+                            <option value="9" data-price="171.00">9K Followers - $171.00</option>
+                            <option value="10" data-price="99.00"><strong>🔥 🔥 🔥 10K Followers - $99.00</strong></option>
+                        </select>
                     </div>
-                    <p class="price-display text-green-600 mb-6">$9.00</p>
+                    <p class="price-display text-green-600 mb-6">$19.00</p>
 
                     <button
                         class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
                         data-product-name="Facebook Page Likes/Followers"
-                    >
-                        Add to Cart
-                    </button>
-                </div>
-
-                <!-- NEW Service Card: X Followers -->
-                <div class="product-card bg-white p-6 rounded-lg shadow-xl flex flex-col items-center text-center">
-                    <div class="service-icon twitter"> <!-- Using twitter class for classic icon -->
-                        <i class="fab fa-twitter"></i> <!-- Classic Twitter icon -->
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2">X Followers</h3> 
-                    <p class="text-gray-600 mb-4">Expand your reach on X with a significant increase in your follower count.</p> 
-                    
-                    <!-- Quantity Control -->
-                    <div class="quantity-control">
-                        <button class="quantity-btn minus-btn">-</button>
-                        <div class="quantity-input-wrapper">
-                            <input type="number" class="quantity-input" value="1" min="1" step="1" data-base-price="9.00">
-                            <span class="unit-display">K</span>
-                        </div>
-                        <button class="quantity-btn plus-btn">+</button>
-                    </div>
-                    <p class="price-display text-green-600 mb-6">$9.00</p>
-
-                    <button
-                        class="add-to-cart-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
-                        data-product-name="X Followers"
                     >
                         Add to Cart
                     </button>
@@ -588,7 +621,7 @@
                     <i class="fab fa-whatsapp text-xl mr-2"></i>
                     WhatsApp
                 </a>
-                <a href="https://www.instagram.com/doxymedia.t68?igsh=MW5kc3d4ZzV5OHdwaA==" target="_blank" class="flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                <a href="https://www.instagram.com/j4mes.dev00?igsh=YWltMXBuM3dzdzNy" target="_blank" class="flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
                     <!-- Instagram Icon (Font Awesome) -->
                     <i class="fab fa-instagram text-xl mr-2"></i>
                     Instagram
@@ -598,16 +631,12 @@
                     <i class="fab fa-telegram-plane text-xl mr-2"></i>
                     Telegram
                 </a>
-                <a href="https://twitter.com/doxymedia_x" target="_blank" class="flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
-                    <!-- Twitter Icon (Font Awesome) - Reverted to classic -->
-                    <i class="fab fa-twitter text-xl mr-2"></i> 
-                    X
-                </a>
-                <a href="mailto:info@doxymedia.com" class="flex items-center justify-center bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                <!-- Changed from <a> to <button> for email contact -->
+                <button id="email-contact-button" class="flex items-center justify-center bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
                     <!-- Email Icon (Font Awesome) -->
                     <i class="fas fa-envelope text-xl mr-2"></i>
                     Email
-                </a>
+                </button>
             </div>
         </section>
     </main>
@@ -636,7 +665,6 @@
                 >
                     Confirm Order via WhatsApp
                 </button>
-                <!-- Removed More Services / Custom Order button from cart modal -->
                 <button
                     id="clear-cart-button"
                     class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-200 ease-in-out transform hover:scale-105"
@@ -647,9 +675,26 @@
         </div>
     </div>
 
+    <!-- New Email Copy Modal (hidden by default) -->
+    <div id="emailCopyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center relative max-w-sm w-full mx-4">
+            <button id="emailCopyModalCloseBtn" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            <p class="text-gray-800 text-lg font-semibold mb-4">Our Email Address:</p>
+            <div class="flex items-center justify-center bg-gray-100 p-3 rounded-md mb-4 border border-gray-300">
+                <span id="emailAddressToCopy" class="text-gray-700 font-mono text-base break-all">serhatsohret25@gmail.com</span>
+            </div>
+            <button id="copyEmailButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out">
+                <i class="fas fa-copy mr-2"></i> Copy Email
+            </button>
+        </div>
+    </div>
+
     <script>
-        // Define the fixed WhatsApp number for Doxy Media
-        const WHATSAPP_NUMBER = '905355404743'; // WhatsApp number from the Instagram page
+        // Define constants
+        const WHATSAPP_NUMBER = '905355404743';
+        const EMAIL_ADDRESS = 'serhatsohret25@gmail.com';
+        // Actual social media background image URL
+        const SOCIAL_MEDIA_BG_IMAGE_URL = 'https://files.catbox.moe/uxv0ci.jpg'; 
 
         // Array to store cart items
         let cart = [];
@@ -663,17 +708,19 @@
         const cartItemsList = document.getElementById('cart-items');
         const cartTotalSpan = document.getElementById('cart-total');
         const orderCartButton = document.getElementById('order-cart-button');
-        // const moreServicesButton = document.getElementById('more-services-button'); // Removed this as it's now a product card
         const clearCartButton = document.getElementById('clear-cart-button');
         const messageBox = document.getElementById('messageBox');
         const headerCartIcon = document.getElementById('header-cart-icon');
         const cartItemCountSpan = document.getElementById('cart-item-count');
-        
-        // Select all quantity controls
-        const quantityControls = document.querySelectorAll('.quantity-control');
+        const emailContactButton = document.getElementById('email-contact-button'); // Email button
+        const emailCopyModal = document.getElementById('emailCopyModal'); // New email modal
+        const emailCopyModalCloseBtn = document.getElementById('emailCopyModalCloseBtn'); // New email modal close button
+        const emailAddressToCopy = document.getElementById('emailAddressToCopy'); // Span with email in modal
+        const copyEmailButton = document.getElementById('copyEmailButton'); // Copy button in modal
+        const heroSection = document.getElementById('hero-section'); // Get hero section
 
-        // Select all FAQ items
-        const faqItems = document.querySelectorAll('.faq-item');
+        const tierSelects = document.querySelectorAll('.tier-select');
+        const faqItems = document.querySelectorAll('.faq-item'); 
 
         // Function to display messages in the message box
         function showMessageBox(message, type = 'info') {
@@ -706,7 +753,6 @@
             if (cart.length === 0) {
                 cartItemCountSpan.textContent = '0';
                 headerCartIcon.classList.add('hidden'); // Hide icon if cart is empty
-                // If cart modal is open and cart becomes empty, close it
                 if (!cartModalOverlay.classList.contains('hidden')) {
                     cartModalOverlay.classList.add('hidden');
                 }
@@ -717,79 +763,47 @@
 
             cart.forEach(item => {
                 const listItem = document.createElement('li');
-                // Display quantity for items that aren't the free demo or custom order with 'K'
-                const quantityText = item.quantity > 0 ? ` (${item.quantity}K)` : '';
-                listItem.textContent = `${item.name}${quantityText} - $${item.price.toFixed(2)}`;
+                let quantityDisplay = '';
+                if (item.quantity > 0) {
+                    quantityDisplay = ` (${item.quantity}K)`;
+                } else if (item.name.includes("Demo")) {
+                    quantityDisplay = " (20 Followers)";
+                }
+                
+                listItem.textContent = `${item.name}${quantityDisplay} - $${item.price.toFixed(2)}`;
                 total += item.price;
-                cartItemsList.appendChild(listItem); // Append after setting textContent
+                cartItemsList.appendChild(listItem);
             });
 
             cartTotalSpan.textContent = `$${total.toFixed(2)}`;
-            cartItemCountSpan.textContent = cart.length; // Update item count on icon
+            cartItemCountSpan.textContent = cart.length;
         }
 
-        // Function to update the price display for a given product card
-        function updateProductPrice(productCard) {
-            const quantityInput = productCard.querySelector('.quantity-input');
+        // Initialize tiered quantity selectors and prices
+        tierSelects.forEach(selectElement => {
+            const productCard = selectElement.closest('.product-card');
             const priceDisplay = productCard.querySelector('.price-display');
-            const basePrice = parseFloat(quantityInput.dataset.basePrice);
-            const quantity = parseInt(quantityInput.value);
 
-            const calculatedPrice = basePrice * quantity;
-            priceDisplay.textContent = `$${calculatedPrice.toFixed(2)}`;
-        }
+            const initialSelectedOption = selectElement.options[selectElement.selectedIndex];
+            priceDisplay.textContent = `$${parseFloat(initialSelectedOption.dataset.price).toFixed(2)}`;
 
-        // Initialize quantity controls and prices
-        quantityControls.forEach(control => {
-            const productCard = control.closest('.product-card');
-            const quantityInput = control.querySelector('.quantity-input');
-            const minusBtn = control.querySelector('.minus-btn');
-            const plusBtn = control.querySelector('.plus-btn');
-
-            // Set initial price
-            updateProductPrice(productCard);
-
-            minusBtn.addEventListener('click', () => {
-                let currentValue = parseInt(quantityInput.value);
-                const minValue = parseInt(quantityInput.min);
-                if (currentValue > minValue) {
-                    quantityInput.value = currentValue - 1;
-                    updateProductPrice(productCard);
-                }
-            });
-
-            plusBtn.addEventListener('click', () => {
-                let currentValue = parseInt(quantityInput.value);
-                const maxValue = parseInt(quantityInput.max) || 999; // Default max if not set
-                if (currentValue < maxValue) {
-                    quantityInput.value = currentValue + 1;
-                    updateProductPrice(productCard);
-                }
-            });
-
-            // Allow direct input, but re-calculate on change/blur
-            quantityInput.addEventListener('change', () => {
-                let currentValue = parseInt(quantityInput.value);
-                const minValue = parseInt(quantityInput.min);
-                const maxValue = parseInt(quantityInput.max) || 999;
-
-                if (isNaN(currentValue) || currentValue < minValue) {
-                    quantityInput.value = minValue;
-                } else if (currentValue > maxValue) {
-                    quantityInput.value = maxValue;
-                }
-                updateProductPrice(productCard);
+            selectElement.addEventListener('change', (event) => {
+                const selectedOption = event.target.options[event.target.selectedIndex];
+                const newPrice = parseFloat(selectedOption.dataset.price);
+                priceDisplay.textContent = `$${newPrice.toFixed(2)}`;
             });
         });
 
-
-        // Event listener for "Add to Cart" buttons (now also handles "More Services")
+        // Event listener for "Add to Cart" buttons
         addToCartButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const productCard = event.target.closest('.product-card');
                 const productName = event.target.dataset.productName;
-                const isFreeDemo = event.target.dataset.isFreeDemo === 'true'; // Check if it's the free demo
-                const isCustomOrder = event.target.dataset.isCustomOrder === 'true'; // Check if it's the custom order
+                const isFreeDemo = event.target.dataset.isFreeDemo === 'true';
+                const isCustomOrder = event.target.dataset.isCustomOrder === 'true';
+
+                let itemPrice;
+                let itemQuantity = 0;
 
                 if (isCustomOrder) {
                     const customOrderMessage = encodeURIComponent(
@@ -798,20 +812,15 @@
                     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${customOrderMessage}`;
                     window.open(whatsappUrl, '_blank');
                     showMessageBox('Opening WhatsApp for custom inquiry!', 'info');
-                    return; // Stop further processing for custom order
-                }
-
-                let itemPrice;
-                let itemQuantity = 0; // Default for non-quantity items (like free demo)
-
-                if (isFreeDemo) {
-                    itemPrice = parseFloat(event.target.dataset.productPrice); // Get fixed price for demo
-                    // itemQuantity remains 0 for free demo, as it's not a 'K' quantity
+                    return;
+                } else if (isFreeDemo) {
+                    itemPrice = parseFloat(event.target.dataset.productPrice);
+                    itemQuantity = 20;
                 } else {
-                    const quantityInput = productCard.querySelector('.quantity-input');
-                    const priceDisplay = productCard.querySelector('.price-display');
-                    itemQuantity = parseInt(quantityInput.value);
-                    itemPrice = parseFloat(priceDisplay.textContent.replace('$', ''));
+                    const tierSelect = productCard.querySelector('.tier-select');
+                    const selectedOption = tierSelect.options[tierSelect.selectedIndex];
+                    itemPrice = parseFloat(selectedOption.dataset.price);
+                    itemQuantity = parseInt(selectedOption.value);
                 }
                 
                 cart.push({ name: productName, price: itemPrice, quantity: itemQuantity });
@@ -832,11 +841,15 @@
             
             let total = 0;
 
-            // Add each item to the message with bullet points and italics for name
             cart.forEach((item, index) => {
-                // Add 'K' only if quantity is greater than 0 (i.e., not the free demo or custom order)
-                const quantityText = item.quantity > 0 ? ` (${item.quantity}K)` : '';
-                message += `* _${item.name}${quantityText}_ - *$${item.price.toFixed(2)}*\n`; // Italic service name, bold price
+                let quantityDisplay = '';
+                if (item.quantity > 0) {
+                    quantityDisplay = ` (${item.quantity}K)`;
+                } else if (item.name.includes("Demo")) {
+                    quantityDisplay = " (20 Followers)";
+                }
+
+                message += `* _${item.name}${quantityDisplay}_ - *$${item.price.toFixed(2)}*\n`;
                 total += item.price;
             });
 
@@ -844,24 +857,20 @@
             message += "_I'm looking forward to seeing my social presence grow!_ ✨\n";
             message += "Please let me know the next steps to confirm and activate these services. Thank you!\n\n";
 
-            // Encode the message to be URL-safe
             const encodedMessage = encodeURIComponent(message);
-
-            // Construct the WhatsApp URL
             const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
 
-            // Open the WhatsApp URL in a new tab
             window.open(whatsappUrl, '_blank');
-            cartModalOverlay.classList.add('hidden'); // Close modal after ordering
+            cartModalOverlay.classList.add('hidden');
             showMessageBox('Opening WhatsApp with your order!', 'info');
         });
 
         // Event listener for "Clear Cart" button
         clearCartButton.addEventListener('click', () => {
-            cart = []; // Clear the cart array
-            updateCartDisplay(); // Update the display to show an empty cart
+            cart = [];
+            updateCartDisplay();
             showMessageBox('Cart cleared!', 'info');
-            cartModalOverlay.classList.add('hidden'); // Close modal after clearing
+            cartModalOverlay.classList.add('hidden');
         });
 
         // Event listener for header cart icon to open cart modal
@@ -889,16 +898,45 @@
         orderNowButton.addEventListener('click', () => {
             servicesSection.scrollIntoView({ behavior: 'smooth' });
         });
+        
+        // NEW: Event listener for Email Contact Button to open custom modal
+        emailContactButton.addEventListener('click', () => {
+            emailAddressToCopy.textContent = EMAIL_ADDRESS; // Ensure email is set in modal
+            emailCopyModal.classList.remove('hidden'); // Show the modal
+        });
 
-        // FAQ accordion functionality
+        // NEW: Event listener for closing the email copy modal
+        emailCopyModalCloseBtn.addEventListener('click', () => {
+            emailCopyModal.classList.add('hidden');
+        });
+
+        // NEW: Event listener for clicking outside the email copy modal content
+        emailCopyModal.addEventListener('click', (event) => {
+            if (event.target === emailCopyModal) {
+                emailCopyModal.classList.add('hidden');
+            }
+        });
+
+        // NEW: Event listener for the "Copy Email" button inside the modal
+        copyEmailButton.addEventListener('click', () => {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = EMAIL_ADDRESS;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy'); // This works in iframe environments
+            document.body.removeChild(tempInput);
+
+            showMessageBox('Email address copied to clipboard!', 'success');
+            emailCopyModal.classList.add('hidden'); // Close modal after copying
+        });
+
+        // FAQ accordion functionality - CLICK TOGGLE & SCROLLING
         faqItems.forEach(item => {
             item.addEventListener('click', () => {
                 const answer = item.querySelector('.faq-answer');
                 const arrow = item.querySelector('.faq-arrow');
 
-                // Toggle visibility of the answer
                 answer.classList.toggle('active');
-                // Rotate the arrow
                 arrow.classList.toggle('rotate');
             });
         });
